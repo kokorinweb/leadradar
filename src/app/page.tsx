@@ -1,6 +1,7 @@
 import { BeforeAfter } from "@/components/BeforeAfter";
 import { Calculator } from "@/components/Calculator";
 import { Contacts } from "@/components/Contacts";
+import { DemoNotice } from "@/components/DemoNotice";
 import { Directions } from "@/components/Directions";
 import { Faq } from "@/components/Faq";
 import { FinalCta } from "@/components/FinalCta";
@@ -18,6 +19,7 @@ import { Works } from "@/components/Works";
 export default function Home() {
   return (
     <>
+      <DemoNotice />
       <Header />
       <main>
         <Hero />
