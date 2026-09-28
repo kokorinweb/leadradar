@@ -1,6 +1,13 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import {
+  ViewTransition,
+  addTransitionType,
+  startTransition,
+  useMemo,
+  useState,
+  type ReactNode,
+} from "react";
 import { CALC } from "@/content/site";
 import { Container, Figure, Heading, Section, money } from "./primitives";
 
@@ -33,6 +40,30 @@ function estimate(
   };
 }
 
+/**
+ * Шаг калькулятора. ViewTransition стоит корнем компонента намеренно: если
+ * обернуть его в элемент, enter и exit гаснут.
+ */
+function StepPanel({ children }: { children: ReactNode }) {
+  return (
+    <ViewTransition
+      default="none"
+      enter={{
+        "step-forward": "step-forward",
+        "step-back": "step-back",
+        default: "none",
+      }}
+      exit={{
+        "step-forward": "step-forward",
+        "step-back": "step-back",
+        default: "none",
+      }}
+    >
+      <div>{children}</div>
+    </ViewTransition>
+  );
+}
+
 export function Calculator() {
   const [step, setStep] = useState(0);
   const [objectType, setObjectType] = useState("");
@@ -56,6 +87,12 @@ export function Calculator() {
     true,
     name.trim().length > 1 && phone.trim().length > 5,
   ][step];
+
+  const goToStep = (next: number) =>
+    startTransition(() => {
+      addTransitionType(next > step ? "step-forward" : "step-back");
+      setStep(next);
+    });
 
   const toggleExtra = (id: string) =>
     setExtras((prev) =>
@@ -136,14 +173,16 @@ export function Calculator() {
 
             <div className="mt-10">
               {sent ? (
+                <StepPanel key="sent">
                 <div>
                   <p className="text-xl font-bold">Заявка отправлена</p>
                   <p className="mt-3 max-w-[26rem] text-[0.95rem] leading-relaxed text-plaster/60">
                     Перезвоним в рабочее время и согласуем удобное время замера.
                   </p>
                 </div>
+                </StepPanel>
               ) : (
-                <>
+                <StepPanel key={step}>
                   {step === 0 ? (
                     <div className="grid gap-3 sm:grid-cols-3">
                       {CALC.objectTypes.map((o) => (
@@ -252,7 +291,7 @@ export function Calculator() {
                       </p>
                     </div>
                   ) : null}
-                </>
+                </StepPanel>
               )}
             </div>
 
@@ -261,7 +300,7 @@ export function Calculator() {
                 {step > 0 ? (
                   <button
                     type="button"
-                    onClick={() => setStep((s) => s - 1)}
+                    onClick={() => goToStep(step - 1)}
                     className="px-5 py-4 text-[0.9rem] text-plaster/55 transition-colors hover:text-plaster"
                   >
                     Назад
@@ -271,7 +310,9 @@ export function Calculator() {
                   type="button"
                   disabled={!canAdvance}
                   onClick={() =>
-                    step === STEPS.length - 1 ? setSent(true) : setStep((s) => s + 1)
+                    step === STEPS.length - 1
+                      ? startTransition(() => setSent(true))
+                      : goToStep(step + 1)
                   }
                   className="ml-auto bg-ochre px-8 py-4 text-[0.95rem] font-semibold text-plaster transition-colors hover:bg-ochre-deep disabled:cursor-not-allowed disabled:bg-line-dark disabled:text-plaster/35"
                 >

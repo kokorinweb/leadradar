@@ -71,3 +71,73 @@ body {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* --- Переходы между шагами калькулятора ---------------------------------
+   Шаги калькулятора — упорядоченная последовательность, поэтому направление
+   движения несёт смысл: вперёд приходит справа, назад — слева. Для лишённых
+   порядка переключений направленные сдвиги были бы враньём про структуру. */
+
+::view-transition-group(*) {
+  --duration-exit: 140ms;
+  --duration-enter: 200ms;
+  --duration-move: 320ms;
+}
+
+@keyframes vt-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes vt-slide {
+  from {
+    translate: var(--slide-offset);
+  }
+  to {
+    translate: 0;
+  }
+}
+
+/* Корневой снимок не анимируем: двигается один блок, а не вся страница. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-old(.step-forward) {
+  --slide-offset: -48px;
+  animation:
+    var(--duration-exit) ease-in both vt-fade reverse,
+    var(--duration-move) ease-in-out both vt-slide reverse;
+}
+::view-transition-new(.step-forward) {
+  --slide-offset: 48px;
+  animation:
+    var(--duration-enter) ease-out var(--duration-exit) both vt-fade,
+    var(--duration-move) ease-in-out both vt-slide;
+}
+
+::view-transition-old(.step-back) {
+  --slide-offset: 48px;
+  animation:
+    var(--duration-exit) ease-in both vt-fade reverse,
+    var(--duration-move) ease-in-out both vt-slide reverse;
+}
+::view-transition-new(.step-back) {
+  --slide-offset: -48px;
+  animation:
+    var(--duration-enter) ease-out var(--duration-exit) both vt-fade,
+    var(--duration-move) ease-in-out both vt-slide;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}
