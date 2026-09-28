@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { Golos_Text, Unbounded } from "next/font/google";
 import "./globals.css";
 import { COMPANY } from "@/content/site";
+import { DemoNotice } from "@/components/DemoNotice";
+import { Footer } from "@/components/Footer";
+import { Header } from "@/components/Header";
 
 const golos = Golos_Text({
   variable: "--font-golos",
@@ -30,7 +33,12 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="ru"
       className={`${golos.variable} ${unbounded.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        <DemoNotice />
+        <Header />
+        {children}
+        <Footer />
+      </body>
     </html>
   );
 }

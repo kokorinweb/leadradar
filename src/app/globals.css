@@ -101,11 +101,38 @@ body {
   }
 }
 
-/* Корневой снимок не анимируем: двигается один блок, а не вся страница. */
-::view-transition-old(root),
+/* Переход между страницами: короткое затухание корневого снимка. */
+::view-transition-old(root) {
+  animation: 120ms ease-in both vt-fade reverse;
+}
 ::view-transition-new(root) {
+  animation: 180ms ease-out 100ms both vt-fade;
+}
+
+/* Внутри калькулятора двигается одна панель, а не вся страница, поэтому
+   корневой снимок для его типов перехода остаётся неподвижным. */
+html:active-view-transition-type(step-forward) ::view-transition-old(root),
+html:active-view-transition-type(step-forward) ::view-transition-new(root),
+html:active-view-transition-type(step-back) ::view-transition-old(root),
+html:active-view-transition-type(step-back) ::view-transition-new(root) {
+  animation: none;
+}
+
+/* Общий элемент: кадр объекта переезжает из сетки в шапку страницы.
+   Пара снимков не растворяется друг в друге — едет сама рамка. */
+::view-transition-group(.work-photo) {
+  animation-duration: 420ms;
+  animation-timing-function: cubic-bezier(0.32, 0.72, 0, 1);
+}
+::view-transition-image-pair(.work-photo) {
+  isolation: auto;
+}
+::view-transition-old(.work-photo),
+::view-transition-new(.work-photo) {
   animation: none;
   mix-blend-mode: normal;
+  height: 100%;
+  object-fit: cover;
 }
 
 ::view-transition-old(.step-forward) {

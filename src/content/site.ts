@@ -32,12 +32,12 @@ export const COMPANY = {
 };
 
 export const NAV = [
-  { label: "Квартиры", href: "#napravleniya" },
-  { label: "Дома", href: "#napravleniya" },
-  { label: "Офисы", href: "#napravleniya" },
-  { label: "Работы", href: "#raboty" },
-  { label: "Цены", href: "#ceny" },
-  { label: "О компании", href: "#kontakty" },
+  { label: "Квартиры", href: "/raboty/?kind=Квартира" },
+  { label: "Дома", href: "/raboty/?kind=Дом" },
+  { label: "Офисы", href: "/raboty/?kind=Офис" },
+  { label: "Работы", href: "/raboty/" },
+  { label: "Цены", href: "/#ceny" },
+  { label: "О компании", href: "/#kontakty" },
 ];
 
 export const HERO = {
@@ -145,15 +145,107 @@ export const PACKAGES = [
   },
 ];
 
-/** Избранные объекты. Фото и данные — с текущего сайта, после сверки. */
-export const WORKS = [
-  { id: "1", title: "Двухкомнатная в новостройке", kind: "Квартира", area: todo(64), months: todo(3), price: todo(690000), ratio: "4/5" },
-  { id: "2", title: "Дом в посёлке", kind: "Дом", area: todo(140), months: todo(7), price: todo(2100000), ratio: "3/2" },
-  { id: "3", title: "Студия под сдачу", kind: "Квартира", area: todo(28), months: todo(2), price: todo(310000), ratio: "1/1" },
-  { id: "4", title: "Офис отдела продаж", kind: "Офис", area: todo(95), months: todo(2), price: todo(880000), ratio: "3/2" },
-  { id: "5", title: "Трёхкомнатная, вторичка", kind: "Квартира", area: todo(78), months: todo(5), price: todo(1150000), ratio: "4/5" },
-  { id: "6", title: "Санузел с перепланировкой", kind: "Квартира", area: todo(9), months: todo(1), price: todo(240000), ratio: "1/1" },
+/**
+ * Объекты. Данные и фотографии переносятся со страницы /nashi-raboty/
+ * текущего сайта после сверки: в частности, что именно означает сумма —
+ * только работы или работы с материалами.
+ */
+export type Work = {
+  slug: string;
+  title: string;
+  kind: "Квартира" | "Дом" | "Офис";
+  area: number;
+  months: number;
+  price: number;
+  /** Что просил клиент. */
+  task: string;
+  /** В каком состоянии приняли объект. */
+  before: string;
+  /** Состав выполненных работ. */
+  done: string[];
+  /** Сколько кадров в галерее объекта. */
+  gallery: number;
+};
+
+export const WORKS: Work[] = [
+  {
+    slug: "dvushka-novostroyka",
+    title: "Двухкомнатная в новостройке",
+    kind: "Квартира",
+    area: todo(64),
+    months: todo(3),
+    price: todo(690000),
+    task: todo("Задача клиента — заполнить со слов компании."),
+    before: todo("Исходное состояние объекта — заполнить."),
+    done: [todo("Перечень выполненных работ — заполнить.")],
+    gallery: 6,
+  },
+  {
+    slug: "dom-v-poselke",
+    title: "Дом в посёлке",
+    kind: "Дом",
+    area: todo(140),
+    months: todo(7),
+    price: todo(2100000),
+    task: todo("Задача клиента — заполнить со слов компании."),
+    before: todo("Исходное состояние объекта — заполнить."),
+    done: [todo("Перечень выполненных работ — заполнить.")],
+    gallery: 8,
+  },
+  {
+    slug: "studiya-pod-sdachu",
+    title: "Студия под сдачу",
+    kind: "Квартира",
+    area: todo(28),
+    months: todo(2),
+    price: todo(310000),
+    task: todo("Задача клиента — заполнить со слов компании."),
+    before: todo("Исходное состояние объекта — заполнить."),
+    done: [todo("Перечень выполненных работ — заполнить.")],
+    gallery: 5,
+  },
+  {
+    slug: "ofis-otdela-prodazh",
+    title: "Офис отдела продаж",
+    kind: "Офис",
+    area: todo(95),
+    months: todo(2),
+    price: todo(880000),
+    task: todo("Задача клиента — заполнить со слов компании."),
+    before: todo("Исходное состояние объекта — заполнить."),
+    done: [todo("Перечень выполненных работ — заполнить.")],
+    gallery: 6,
+  },
+  {
+    slug: "treshka-vtorichka",
+    title: "Трёхкомнатная, вторичка",
+    kind: "Квартира",
+    area: todo(78),
+    months: todo(5),
+    price: todo(1150000),
+    task: todo("Задача клиента — заполнить со слов компании."),
+    before: todo("Исходное состояние объекта — заполнить."),
+    done: [todo("Перечень выполненных работ — заполнить.")],
+    gallery: 7,
+  },
+  {
+    slug: "sanuzel-pereplanirovka",
+    title: "Санузел с перепланировкой",
+    kind: "Квартира",
+    area: todo(9),
+    months: todo(1),
+    price: todo(240000),
+    task: todo("Задача клиента — заполнить со слов компании."),
+    before: todo("Исходное состояние объекта — заполнить."),
+    done: [todo("Перечень выполненных работ — заполнить.")],
+    gallery: 4,
+  },
 ];
+
+/** Имя общего элемента для перехода между сеткой и карточкой объекта. */
+export const workPhotoName = (slug: string) => `work-photo-${slug}`;
+
+export const WORK_KINDS = ["Все", "Квартира", "Дом", "Офис"] as const;
 
 export const PROCESS = [
   { title: "Заявка", text: "Звонок или форма на сайте. Уточняем объект и удобное время." },

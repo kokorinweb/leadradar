@@ -1,5 +1,5 @@
 import Link from "next/link";
-import type { ReactNode } from "react";
+import { ViewTransition, type ReactNode } from "react";
 
 export function Container({
   children,
@@ -93,12 +93,15 @@ export function PhotoSlot({
   label,
   ratio = "3/2",
   className = "",
+  vtName,
 }: {
   label: string;
   ratio?: string;
   className?: string;
+  /** Имя общего элемента: кадр переезжает из сетки в шапку объекта. */
+  vtName?: string;
 }) {
-  return (
+  const frame = (
     <div
       style={{ aspectRatio: ratio }}
       className={`relative w-full overflow-hidden bg-plaster-deep ${className}`}
@@ -117,6 +120,14 @@ export function PhotoSlot({
         </span>
       </div>
     </div>
+  );
+
+  if (!vtName) return frame;
+
+  return (
+    <ViewTransition name={vtName} share="work-photo">
+      {frame}
+    </ViewTransition>
   );
 }
 
