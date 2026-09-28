@@ -1,26 +1,73 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* Дизайн-токены. Палитра выведена из материалов ремонта:
+   штукатурка, графит, битум, строительная разметка, бетон. */
+@theme {
+  --color-plaster: #ecebe7;
+  --color-plaster-deep: #e2e0da;
+  --color-graphite: #22262b;
+  --color-bitumen: #171a1d;
+  --color-ochre: #c77a16;
+  --color-ochre-deep: #a86410;
+  --color-concrete: #9a9a94;
+  --color-line: #d6d4ce;
+  --color-line-dark: #34393f;
+
+  --font-sans: var(--font-golos), system-ui, sans-serif;
+  --font-figure: var(--font-unbounded), var(--font-golos), sans-serif;
+
+  /* Вертикальный ритм: воздух между блоками. */
+  --spacing-block: 6rem;
+  --spacing-block-lg: 10rem;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-plaster);
+  color: var(--color-graphite);
+  font-family: var(--font-sans);
+  font-feature-settings: "ss01";
+}
+
+/* Цифры — доказательство, поэтому всегда табличные и моноширинные по ширине. */
+.figure {
+  font-family: var(--font-figure);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+/* Штукатурная фактура: крупное зерно, едва заметное. */
+.plaster-grain {
+  position: relative;
+  isolation: isolate;
+}
+.plaster-grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.5;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.28'/%3E%3C/svg%3E");
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-ochre);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
