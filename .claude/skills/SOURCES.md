@@ -20,6 +20,19 @@
 | `accessibility-a11y` | WCAG 2.2, ARIA, клавиатурная навигация. |
 | `seo-analytics-auditor` | Мета-теги, структурированные данные, Core Web Vitals. |
 
+## vercel-labs/agent-skills — MIT License
+
+| Скилл | Назначение |
+| --- | --- |
+| `web-design-guidelines` | Аудит готовой вёрстки по Web Interface Guidelines. |
+| `react-view-transitions` | Анимации через View Transition API. В Next.js 16 работает без флагов и без `react@canary`. |
+| `react-best-practices` | Производительность React и Next.js. |
+| `deploy-to-vercel` | Порядок деплоя на Vercel, включая путь «связать проект один раз, дальше деплоит git push». |
+
+Репозиторий `vercel-labs/skills` — это не набор скиллов, а CLI для их установки
+(`npx skills add`). Внутри один скилл `find-skills`, который учит искать
+остальные. Нужные скиллы лежат в `vercel-labs/agent-skills`.
+
 ## Что намеренно не установлено
 
 Из `travisjneuman/.claude` доступно 127 скиллов. Семейство `generic-react-*`
@@ -34,3 +47,13 @@
 `brand-guidelines` (фирменный стиль Anthropic, не наш), `canvas-design`
 (постеры в PNG/PDF, 5.6 МБ) и `web-artifacts-builder` (артефакты claude.ai,
 не Next.js-проект).
+
+Из `vercel-labs/agent-skills` не устанавливались `composition-patterns`
+(паттерны компонентных библиотек — избыточно для лендинга), `vercel-optimize`
+(1.2 МБ про снижение счёта за Vercel на работающем проекте),
+`writing-guidelines` (стиль технической документации, не продающих текстов),
+`react-native-skills` и `vercel-cli-with-tokens`.
+
+Ни один из установленных скиллов не умеет создавать изображения. Такого скилла
+не существует: генерация картинок — это отдельный инструмент, а не инструкция
+в контексте модели.
