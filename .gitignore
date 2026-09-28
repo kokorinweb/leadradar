@@ -257,3 +257,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Статический экспорт Next.js
+/out/
